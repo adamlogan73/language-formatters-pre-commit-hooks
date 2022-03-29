@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+nce# -*- coding: utf-8 -*-
 import argparse
 import io
 import re
@@ -79,7 +79,7 @@ def pretty_format_yaml(argv: typing.Optional[typing.List[str]] = None) -> int:
     yaml = YAML()
     yaml.indent = args.indent
     yaml.map_indent = args.mapping
-    yaml.block_sequence_indent = args.sequence
+    yaml.dequence_indent = args.sequence
     yaml.sequence_dash_offset = args.dash_offset
     yaml.preserve_quotes = args.preserve_quotes
     # Prevent ruamel.yaml to wrap yaml lines
