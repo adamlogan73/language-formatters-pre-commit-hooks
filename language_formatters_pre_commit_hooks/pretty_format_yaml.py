@@ -43,26 +43,23 @@ def pretty_format_yaml(argv: typing.Optional[typing.List[str]] = None) -> int:
     parser.add_argument(
         "--indent",
         type=int,
-        default=None,
-        help=("The number of indent spaces or a string to be used as delimiter" ' for indentation level e.g. 4 or "\t" (Default: None)'),
+        default=2,
+        help=("The number of indent spaces or a string to be used as delimiter" ' for indentation level e.g. 4 or "\t" (Default: 2)'),
     )
     parser.add_argument(
         "--sequence",
         type=int,
-        default="4",
-        help=("The number of indent spaces or a string to be used as delimiter for dequences" ' for indentation level e.g. 4 or "\t" (Default: 4)'),
+        help=("The number of indent spaces for sequences" ' for indentation level e.g. 4 or "\t" (Default: 2)'),
     )
     parser.add_argument(
         "--mapping",
         type=int,
-        default="2",
-        help=("The number of indent spaces or a string to be used as delimiter" ' for indentation level e.g. 4 or "\t" (Default: 2)'),
+        help=("The number of indent spaces for mappings" ' for indentation level e.g. 4 or "\t" (Default: 2)'),
     )
     parser.add_argument(
         "--dash_offset",
         type=int,
-        default="2",
-        help=("The number of indent spaces or a string to be used as delimiter" ' for indentation level e.g. 4 or "\t" (Default: 2)'),
+        help=("The number of indent spaces or a string to be used as delimiter" ' for indentation level e.g. 4 or "\t" (Default: 0)'),
     )
     parser.add_argument(
         "--preserve-quotes",
@@ -75,16 +72,14 @@ def pretty_format_yaml(argv: typing.Optional[typing.List[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     status = 0
-
+    indent_defaults = {mapping: 2, sequence: 2, dash_offset: 0}
     yaml = YAML()
-    if args.indent is not None:
-        yaml.indent = args.indent
-    else:
-        yaml.indent(
-            mapping=args.mapping,
-            sequence=args.sequence,
-            offset=args.dash_offset,
-        )
+    yaml.indent = args.indent
+    if args.sequence or args.mapping or args.dash_offset:
+        mapping = args.mapping if args.mapping else indent_defaults["mapping"]
+        sequence = args.sequence if args.sequence else indent_defaults["sequence"]
+        offset = args.dash_offset if args.dash_offset else indent_defaults["offset"]
+        yaml.indent(mapping=mapping, sequence=sequence, offset=offset)
     yaml.preserve_quotes = args.preserve_quotes
     # Prevent ruamel.yaml to wrap yaml lines
     yaml.width = maxsize  # type: ignore  # mypy recognise yaml.width as None
