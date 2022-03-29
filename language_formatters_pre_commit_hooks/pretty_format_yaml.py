@@ -72,7 +72,7 @@ def pretty_format_yaml(argv: typing.Optional[typing.List[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     status = 0
-    indent_defaults = {"mapping": 2, "sequence": 2, "dash_offset": 0}
+    indent_defaults = {"mapping": 2, "sequence": 2, "offset": 0}
     yaml = YAML()
     yaml.indent = args.indent
     if args.sequence or args.mapping or args.dash_offset:
